@@ -1,0 +1,62 @@
+
+// Load Phones Data*****
+const loadPhone = async (search) => {
+    try {
+        const res = await fetch(`https://openapi.programming-hero.com/api/phones?search=${search}`)
+        const phones = await res.json();
+        displayAllPhones(phones.data)
+    }
+    catch (error) {
+        console.log(error)
+    }
+}
+
+// display phone Data*****
+const displayAllPhones = phones => {
+    const phoneContainer = document.getElementById('phones-container');
+    phoneContainer.innerHTML = '';
+    phones = phones.slice(0, 10);
+    // all phones looping by[forEach]
+    phones.forEach(phone => {
+        console.log(phone)
+        const div = document.createElement('div');
+        div.classList.add('col');
+        div.innerHTML = `
+            <div class="card">
+                <img src="${phone.image}" class="card-img-top" alt="...">
+                <div class="card-body">
+                <h5 class="card-title">${phone.phone_name}</h5>
+                <p class="card-text">This is a longer card with supporting text below as a natural lead-in
+                    to additional content. This content is a little bit longer.</p>
+                    <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#phoneModal">
+                        Phone Details
+                    </button>
+            </div>
+        </div>
+        `
+        phoneContainer.appendChild(div);
+        //load spinner
+        const div1 = document.getElementById('spinner');
+        div1.classList.add('d-none');
+    })
+
+    //defult btn hide but when all data load then show the btn
+    // const showAllBtn = document.getElementById("all-phone-btn");
+    // showAllBtn.classList.remove('d-none');
+}
+
+
+// Phone Search*****
+document.getElementById('btn-search').addEventListener('click', function () {
+    //load spinner
+    document.getElementById('spinner').classList.remove('d-none');
+    const inputValue = document.getElementById('input-fild').value;
+    loadPhone(inputValue);
+
+})
+
+
+
+
+// loadPhone();
